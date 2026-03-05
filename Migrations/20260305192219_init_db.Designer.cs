@@ -12,7 +12,7 @@ using OrganisationalAuth.Data;
 namespace OrganisationalAuth.Migrations
 {
     [DbContext(typeof(UserDbContext))]
-    [Migration("20260302181852_init_db")]
+    [Migration("20260305192219_init_db")]
     partial class init_db
     {
         /// <inheritdoc />
