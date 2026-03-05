@@ -13,6 +13,9 @@ FROM mcr.microsoft.com/dotnet/aspnet:9.0
 WORKDIR /app
 
 ENV ASPNETCORE_URLS=http://+:5008
+ENV ASPNETCORE_ENVIRONMENT=Production
+ENV DATABASE_CONNECTION_STRING=
+
 EXPOSE 5008
 
 COPY --from=build /app/publish .
