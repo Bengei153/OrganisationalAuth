@@ -18,8 +18,11 @@ namespace OrganisationalAuth
             {
                 options.AddPolicy("ReactCorsPolicy", policy =>
                 {
+                    var allowedOrigins = builder.Configuration["Cors:AllowedOrigins"]?.Split(",") 
+                        ?? new[] { "http://localhost:5173" };
+                    
                     policy
-                        .WithOrigins("http://localhost:5173")
+                        .WithOrigins(allowedOrigins)
                         .AllowAnyMethod()
                         .AllowAnyHeader()
                         .AllowCredentials(); // Only if you use cookies (optional)
@@ -70,8 +73,12 @@ namespace OrganisationalAuth
 
             app.UseCors("ReactCorsPolicy");
 
-            app.UseHttpsRedirection();
+            if (!app.Environment.IsDevelopment())
+            {
+                app.UseHttpsRedirection();
+            }
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
 
