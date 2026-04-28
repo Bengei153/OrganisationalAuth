@@ -52,9 +52,9 @@ namespace OrganisationalAuth
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
             builder.Services.AddOpenApi();
 
-            var connectionString = builder.Configuration.GetConnectionString("conString")
-                ?? Environment.GetEnvironmentVariable("DATABASE_CONNECTION_STRING")
-                ?? throw new InvalidOperationException("Connection string 'conString' not found in configuration or DATABASE_CONNECTION_STRING environment variable.");
+            var connectionString = builder.Configuration.GetConnectionString("conString");
+                //?? Environment.GetEnvironmentVariable("DATABASE_CONNECTION_STRING")
+                //?? throw new InvalidOperationException("Connection string 'conString' not found in configuration or DATABASE_CONNECTION_STRING environment variable.");
 
             builder.Services.AddDbContext<UserDbContext>(options =>
                 options.UseNpgsql(connectionString));
