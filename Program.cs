@@ -52,12 +52,15 @@ namespace OrganisationalAuth
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
             builder.Services.AddOpenApi();
 
-            var connectionString = builder.Configuration.GetConnectionString("conString");
-                //?? Environment.GetEnvironmentVariable("DATABASE_CONNECTION_STRING")
-                //?? throw new InvalidOperationException("Connection string 'conString' not found in configuration or DATABASE_CONNECTION_STRING environment variable.");
+            var connectionString = DatabaseConnectionStringResolver.Resolve(builder.Configuration);
 
             builder.Services.AddDbContext<UserDbContext>(options =>
-                options.UseNpgsql(connectionString));
+                options.UseNpgsql(connectionString, npgsqlOptions =>
+                {
+                    // Hosted Postgres instances can be slow to wake up or briefly unavailable.
+                    npgsqlOptions.EnableRetryOnFailure(5, TimeSpan.FromSeconds(10), null);
+                    npgsqlOptions.CommandTimeout(60);
+                }));
 
             //Add Serivices
             builder.Services.AddScoped<IAuthService, AuthService>();

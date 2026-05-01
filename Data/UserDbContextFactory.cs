@@ -15,13 +15,14 @@ public class UserDbContextFactory : IDesignTimeDbContextFactory<UserDbContext>
             .AddEnvironmentVariables()
             .Build();
 
-        var connectionString = Environment.GetEnvironmentVariable("DATABASE_CONNECTION_STRING")
-            ?? configuration.GetConnectionString("conString")
-            ?? throw new InvalidOperationException(
-                "No database connection string was found. Set DATABASE_CONNECTION_STRING or ConnectionStrings:conString.");
+        var connectionString = DatabaseConnectionStringResolver.Resolve(configuration);
 
         var optionsBuilder = new DbContextOptionsBuilder<UserDbContext>();
-        optionsBuilder.UseNpgsql(connectionString);
+        optionsBuilder.UseNpgsql(connectionString, npgsqlOptions =>
+        {
+            npgsqlOptions.EnableRetryOnFailure(5, TimeSpan.FromSeconds(10), null);
+            npgsqlOptions.CommandTimeout(60);
+        });
 
         return new UserDbContext(optionsBuilder.Options);
     }

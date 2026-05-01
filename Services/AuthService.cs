@@ -16,7 +16,7 @@ public class AuthService(UserDbContext context, IConfiguration configuration) : 
 {
     public async Task<TokenResponseDto?> LoginAsync(UserDto request)
     {
-        var user = context.Users.FirstOrDefault(u => u.Username == request.Username);
+        var user = await context.Users.FirstOrDefaultAsync(u => u.Username == request.Username);
 
         if (user is null)
         {
