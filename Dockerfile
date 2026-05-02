@@ -14,7 +14,6 @@ WORKDIR /app
 
 ENV ASPNETCORE_URLS=http://+:5008
 ENV ASPNETCORE_ENVIRONMENT=Production
-ENV DATABASE_CONNECTION_STRING=Host=ep-empty-union-anuxnzdz-pooler.c-6.us-east-1.aws.neon.tech; Database=neondb; Username=neondb_owner; Password=npg_acBR3m4kGehT; SSL Mode=VerifyFull; Channel Binding=Require;
 
 EXPOSE 5008
 
