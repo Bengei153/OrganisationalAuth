@@ -18,9 +18,10 @@ namespace OrganisationalAuth
             {
                 options.AddPolicy("ReactCorsPolicy", policy =>
                 {
-                    var allowedOrigins = builder.Configuration["Cors:AllowedOrigins"]?.Split(",") 
+                    var allowedOrigins = builder.Configuration["Cors:AllowedOrigins"]?.Split(",",
+                    StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries)
                         ?? new[] { "http://localhost:5173" };
-                    
+
                     policy
                         .WithOrigins(allowedOrigins)
                         .AllowAnyMethod()
